@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HIGH PERFORMANCE MANAGEMENT SERVICE LTDA — Soluções em Intermediação de Crédito e Serviços Financeiros</title>
+  <meta name="description" content="HIGH PERFORMANCE MANAGEMENT SERVICE LTDA oferece serviços de intermediação de crédito, análise de risco, gestão de recebíveis e compliance para empresas do Brasil. Plataforma segura, transparente e em conformidade com normas do Banco Central." />
+  <meta name="color-scheme" content="light dark" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!--
+    Projeto: HIGH PERFORMANCE MANAGEMENT SERVICE LTDA
+    Tema: Atividades Relacionadas à Intermediação de Crédito • Serviços Financeiros
+    Endereço: Rua Joao Batista da Silva Lessa, 287
+    E-mail: tiago@performancemanagementservice.org
+    Observações:
+      - Conteúdo em português brasileiro.
+      - Sem campo de telefone (conformidade com diretrizes da Apple e privacidade).
+      - Acessível: labels, aria-roles, contraste, foco visível.
+      - Single file: HTML + CSS + JS inline.
+      - Layout inspirado em UI fintech moderna (gradientes verdes).
+      - Formulário em modal + modal de sucesso (sem envio real de dados).
+  -->
+  <style>
+    /* ========= RESET & TOKENS ========= */
+    :root{
+      --bg:#0b1a15;
+      --bg-2:#0d1f1a;
+      --ink:#0e1a12;
+      --card:#12261f;
+      --cta:#2ce39e;
+      --cta-2:#89f0c9;
+      --muted:#b8c7c1;
+      --text:#e8f5ef;
+      --text-2:#d3e7de;
+      --border:#1f3a30;
+      --focus:#82ffd1;
+      --error:#ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius-sm:12px;
+      --maxw:1180px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:400 16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+    img{max-width:100%;display:block}
+    a{color:var(--cta);text-decoration:none}
+    a:focus,button:focus,input:focus,textarea:focus{outline:3px solid var(--focus);outline-offset:2px}
+    ::selection{background:rgba(44,227,158,.35)}
+    /* ========= LAYOUT ========= */
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+    header{
+      position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.3) blur(10px);
+      background:linear-gradient(180deg,rgba(11,26,21,0.85),rgba(11,26,21,0.35) 70%, transparent);
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand i{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#1fe39a,#4debb5 60%,#b8fbe7);box-shadow:0 6px 20px rgba(76,235,181,.35)}
+    .brand span{font-weight:700;letter-spacing:.3px}
+    .menu{display:flex;gap:22px}
+    .menu a{color:var(--text-2);opacity:.9}
+    .menu a:hover{opacity:1}
+    .cta-btn{
+      border:0;border-radius:999px;padding:10px 18px;background:linear-gradient(135deg,var(--cta),var(--cta-2));
+      color:#042218;font-weight:700;box-shadow:0 6px 24px rgba(44,227,158,.35);cursor:pointer
+    }
+    .cta-btn:active{transform:translateY(1px)}
+    /* ========= HERO ========= */
+    .hero{
+      position:relative;isolation:isolate;overflow:hidden
+    }
+    .hero::before{
+      /* foto temática finanças (gradiente + sobreposição) */
+      content:"";
+      position:absolute;inset:-10% -10% 0 -10%;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(44,227,158,.25), transparent 60%),
+        radial-gradient(1200px 600px at 80% 20%, rgba(137,240,201,.2), transparent 70%),
+        linear-gradient(180deg, rgba(9,22,18,.8), rgba(9,22,18,.6) 20%, rgba(9,22,18,.85) 60%, rgba(9,22,18,1) 100%),
+        url("https://images.unsplash.com/photo-1554224155-1696413565d3?q=80&w=2000&auto=format&fit=crop") center/cover no-repeat;
+      z-index:-1;filter:saturate(1.05) contrast(1.05) brightness(.95);
+    }
+    .hero .wrap{padding:96px 0 40px}
+    .eyebrow{font-size:.9rem;letter-spacing:.15rem;text-transform:uppercase;color:var(--cta-2);opacity:.95}
+    h1{font-size:clamp(32px,4.8vw,56px);line-height:1.05;margin:14px 0 12px}
+    .subtitle{max-width:820px;color:var(--text-2);opacity:.92}
+    .hero-cta{display:flex;gap:12px;align-items:center;margin:26px 0 48px}
+    .hero input[type="email"]{
+      width:320px;max-width:60vw;background:rgba(18,38,31,.7);border:1px solid var(--border);
+      padding:12px 14px;border-radius:12px;color:var(--text);backdrop-filter:blur(4px)
+    }
+    .hero .cards{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:20px 0 0
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(26,54,45,.95),rgba(18,38,31,.95));
+      border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)
+    }
+    .card h3{margin:6px 0 8px}
+    .muted{color:var(--muted);font-size:.95rem}
+    /* ========= SECTIONS ========= */
+    section{padding:76px 0;border-top:1px solid rgba(255,255,255,.06)}
+    section .title{font-size:clamp(26px,3.6vw,40px);margin:0 0 10px}
+    section .lead{color:var(--text-2);max-width:860px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:24px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
+    .feature{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+    .feature h4{margin:10px 0}
+    .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04)}
+    .icon{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--cta),var(--cta-2))}
+    .list{margin:0;padding-left:18px}
+    .list li{margin:6px 0}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-2)}
+    /* ========= PROCESS ========= */
+    .process{counter-reset:step}
+    .step{position:relative;padding:22px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border)}
+    .step::before{
+      counter-increment:step;content:counter(step);
+      position:absolute;left:-14px;top:-14px;width:36px;height:36px;border-radius:50%;
+      background:linear-gradient(135deg,var(--cta),var(--cta-2));color:#082017;font-weight:800;display:grid;place-items:center;box-shadow:var(--shadow)
+    }
+    .arrow{display:flex;justify-content:center;align-items:center;font-weight:700;opacity:.7}
+    /* ========= CALLOUT / MISSION ========= */
+    .callout{
+      border:1px solid var(--border);border-radius:24px;padding:20px;background:
+        radial-gradient(900px 240px at 20% 10%, rgba(44,227,158,.16), transparent 60%),
+        linear-gradient(180deg,rgba(17,41,33,.9),rgba(14,33,27,.98));box-shadow:var(--shadow)
+    }
+    /* ========= FOOTER ========= */
+    footer{padding:46px 0 80px;background:linear-gradient(180deg, #0a1713,#07110e);border-top:1px solid rgba(255,255,255,.06)}
+    .foot{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
+    small, .legal{color:#9db1aa}
+    /* ========= MODALS ========= */
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;z-index:100;
+      background:rgba(0,0,0,.6)
+    }
+    .modal[aria-hidden="false"]{display:flex}
+    .modal-dialog{
+      width:min(720px,92vw);background:linear-gradient(180deg,#15392e,#102b23);
+      border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);padding:24px
+    }
+    .modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .close-btn{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:6px 10px;cursor:pointer}
+    form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    form .row3{display:grid;grid-template-columns:1fr;gap:14px}
+    label{display:block;font-weight:600;margin:10px 0 6px}
+    input[type="text"],input[type="email"],textarea,select{
+      width:100%;background:#0f231d;border:1px solid var(--border);border-radius:12px;color:var(--text);
+      padding:12px 14px
+    }
+    textarea{min-height:120px;resize:vertical}
+    .check{display:flex;gap:10px;align-items:flex-start;margin-top:8px}
+    .form-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:10px}
+    .ghost{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:999px;padding:10px 18px;cursor:pointer}
+    /* ========= RESPONSIVO ========= */
+    @media (max-width: 920px){
+      .grid-3{grid-template-columns:1fr 1fr}
+      .grid-2{grid-template-columns:1fr}
+      .hero .cards{grid-template-columns:1fr}
+      .foot{grid-template-columns:1fr}
+      form .row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- ========= NAV ========= -->
+  <header role="banner" aria-label="Cabeçalho do site">
+    <div class="container nav">
+      <div class="brand" aria-label="Logotipo HIGH PERFORMANCE MANAGEMENT SERVICE LTDA">
+        <i aria-hidden="true"></i>
+        <span>High Performance</span>
+      </div>
+      <nav class="menu" aria-label="Menu principal">
+        <a href="#inicio">Visão Geral</a>
+        <a href="#sobre">Quem Somos</a>
+        <a href="#servicos">Soluções</a>
+        <a href="#diferenciais">Por que Nós</a>
+        <a href="#processo">Nosso Processo</a>
+        <a href="#contato" class="pill">Contato</a>
+      </nav>
+      <button class="cta-btn" data-open="contact-modal" aria-haspopup="dialog" aria-controls="contact-modal">Começar Agora</button>
+    </div>
+  </header>
+
+  <!-- ========= HERO ========= -->
+  <main id="inicio" class="hero" role="main">
+    <div class="container wrap">
+      <p class="eyebrow">Plataforma segura para empresas</p>
+      <h1>Gestão inteligente de crédito e serviços financeiros</h1>
+      <p class="subtitle">
+        A <strong>HIGH PERFORMANCE MANAGEMENT SERVICE LTDA</strong> impulsiona o acesso a capital por meio de
+        <em>intermediação de crédito</em> com análise de risco orientada por dados, gestão de recebíveis e
+        compliance contínuo. Conectamos sua empresa às melhores opções de funding com total transparência e rastreabilidade.
+      </p>
+      <div class="hero-cta" role="region" aria-label="Inscrição de novidades por e-mail">
+        <label class="sr-only" for="newsletter">Seu e-mail</label>
+        <input id="newsletter" type="email" inputmode="email" autocomplete="email" placeholder="Digite seu e-mail corporativo" aria-label="Digite seu e-mail corporativo">
+        <button class="cta-btn" data-open="contact-modal">Fale com um especialista</button>
+      </div>
+
+      <div class="cards" aria-label="Destaques rápidos">
+        <article class="card">
+          <span class="badge"><span class="icon" aria-hidden="true"></span>Risco &amp; Retorno</span>
+          <h3>Modelos proprietários de crédito</h3>
+          <p class="muted">
+            Score setorial, probabilidade de inadimplência (PD) e recuperação esperada (LGD) com explicabilidade
+            para comitês e auditorias. Relatórios exportáveis e trilha de auditoria completa.
+          </p>
+        </article>
+        <article class="card">
+          <span class="badge"><span class="icon" aria-hidden="true"></span>Liquidez</span>
+          <h3>Gestão de recebíveis</h3>
+          <p class="muted">
+            Consolidação de duplicatas, reconciliação automática e esteiras de cessão. Indicadores de aging e
+            antecipação com múltiplos parceiros de funding.
+          </p>
+        </article>
+        <article class="card">
+          <span class="badge"><span class="icon" aria-hidden="true"></span>Conformidade</span>
+          <h3>Governança e compliance</h3>
+          <p class="muted">
+            KYC, AML e monitoramento de listas restritivas com atualizações diárias. Políticas alinhadas às
+            normas do Banco Central e melhores práticas de privacidade.
+          </p>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========= SOBRE ========= -->
+  <section id="sobre" aria-labelledby="t-sobre">
+    <div class="container">
+      <h2 id="t-sobre" class="title">Quem somos por trás dos números</h2>
+      <p class="lead">
+        Somos uma empresa independente de serviços financeiros focada em atividades relacionadas à intermediação de crédito.
+        Atendemos médias e grandes empresas que buscam crédito estruturado, governança e previsibilidade de caixa.
+        Atuamos como ponte entre tomadores e originadores, orquestrando dados, parceiros e riscos para liberar capital
+        nas condições certas. Operamos com contratos transparentes, métricas auditáveis e aderência regulatória integral.
+        Nosso time combina experiência em bancos, fintechs e auditorias, unindo disciplina de risco com velocidade tecnológica.
+      </p>
+
+      <div class="grid-3" role="list">
+        <div class="feature" role="listitem">
+          <span class="badge"><span class="icon" aria-hidden="true"></span>Propósito</span>
+          <h4>Acelerar negócios com crédito responsável</h4>
+          <p>Maximizamos a disponibilidade de capital sem descuidar da sustentabilidade do portfólio e da proteção de dados.</p>
+          <ul class="list">
+            <li>Transparência em taxas, garantias e covenants.</li>
+            <li>Métricas de risco publicadas nos dossiês.</li>
+            <li>Relatórios acessíveis ao auditor do cliente.</li>
+          </ul>
+        </div>
+        <div class="feature" role="listitem">
+          <span class="badge"><span class="icon" aria-hidden="true"></span>Time</span>
+          <h4>Especialistas em crédito e dados</h4>
+          <p>Analistas certificados, cientistas de dados e advogados estruturam operações sob governança clara.</p>
+          <ul class="list">
+            <li>Comitês com votos e ata digitais.</li>
+            <li>Explicabilidade dos modelos (SHAP/ICE).</li>
+            <li>Esteiras com segregação de funções.</li>
+          </ul>
+        </div>
+        <div class="feature" role="listitem">
+          <span class="badge"><span class="icon" aria-hidden="true"></span>Plataforma</span>
+          <h4>Integração com parceiros de funding</h4>
+          <p>Integramos bancos, FIDCs e marketplaces de crédito, preservando sua independência e confidencialidade.</p>
+          <ul class="list">
+            <li>APIs para consulta de limites e propostas.</li>
+            <li>Controle de versões de contratos.</li>
+            <li>Observabilidade e logs imutáveis.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= SERVIÇOS ========= -->
+  <section id="servicos" aria-labelledby="t-serv">
+    <div class="container">
+      <h2 id="t-serv" class="title">Soluções que entregam caixa, controle e compliance</h2>
+      <p class="lead">Três linhas de serviço, cada uma com processos padronizados, SLAs claros e indicadores de performance.</p>
+
+      <div class="grid-3" role="list">
+        <article class="feature" role="listitem">
+          <span class="badge"><span class="icon"></span>Originação</span>
+          <h4>Intermediação de Crédito B2B</h4>
+          <p>
+            Estruturamos e comparamos propostas com múltiplos financiadores para capital de giro, antecipação de recebíveis
+            e linhas com garantia. Cada proposta inclui CET, prazos, garantias e covenants documentados.
+          </p>
+          <p class="muted">Benefícios: acesso rápido a funding competitivo, documentação padronizada e trilha de auditoria.</p>
+          <ul class="list">
+            <li>Dossiê digital com dados financeiros e garantias.</li>
+            <li>Matriz de comparação entre instituições.</li>
+            <li>Negociação assistida por comitê.</li>
+          </ul>
+        </article>
+
+        <article class="feature" role="listitem">
+          <span class="badge"><span class="icon"></span>RiskOps</span>
+          <h4>Análise &amp; Monitoramento de Risco</h4>
+          <p>
+            Modelos de PD/LGD, simulações de estresse e alertas de early warning. Painéis com aging, concentração por
+            contraparte e sensibilidade a cenários macro.
+          </p>
+          <p class="muted">Benefícios: previsibilidade de perdas, governança e comunicação transparente com stakeholders.</p>
+          <ul class="list">
+            <li>Relatórios explicáveis para comitês.</li>
+            <li>Monitoramento contínuo (KRI/KPI).</li>
+            <li>Integração com bureaus e bases públicas.</li>
+          </ul>
+        </article>
+
+        <article class="feature" role="listitem">
+          <span class="badge"><span class="icon"></span>Recebíveis+</span>
+          <h4>Gestão de Recebíveis &amp; Liquidez</h4>
+          <p>
+            Consolidação de títulos, reconciliação automática e esteira de cessão para FIDCs. Mecanismos de custódia,
+            notificação e conciliação com ERP.
+          </p>
+          <p class="muted">Benefícios: redução de inadimplência, melhor giro de caixa e menos esforço operacional.</p>
+          <ul class="list">
+            <li>APIs para bancos e registradoras.</li>
+            <li>Workflows com aprovação em dois fatores.</li>
+            <li>Logs imutáveis e exportação para auditoria.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= DIFERENCIAIS ========= -->
+  <section id="diferenciais" aria-labelledby="t-dif">
+    <div class="container">
+      <h2 id="t-dif" class="title">Três razões para escolher a High Performance</h2>
+      <p class="lead">Diferenciais construídos para passar no escrutínio de auditorias e acelerar a liberação de crédito.</p>
+
+      <div class="grid-3">
+        <div class="feature">
+          <span class="badge"><span class="icon"></span>Transparência radical</span>
+          <h4>Documentação clara e comparável</h4>
+          <p>Propostas com CET detalhado, encargos e cenários. Dossiês com versionamento e assinatura eletrônica.</p>
+        </div>
+        <div class="feature">
+          <span class="badge"><span class="icon"></span>Compliance contínuo</span>
+          <h4>Conformidade nativa</h4>
+          <p>Processos KYC/AML, monitoramento de listas, governança de dados e políticas alinhadas às normas do setor.</p>
+        </div>
+        <div class="feature">
+          <span class="badge"><span class="icon"></span>Data-Driven</span>
+          <h4>Risco explicável</h4>
+          <p>Modelos com explicabilidade, KRIs de portfólio e painéis operacionais com foco em decisões rápidas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= MISSÃO (BLOCO OPCIONAL 4) ========= -->
+  <section id="missao" aria-labelledby="t-missao">
+    <div class="container">
+      <h2 id="t-missao" class="title">Nossa missão e impacto</h2>
+      <div class="callout">
+        <p class="lead">
+          Democratizar o acesso a crédito empresarial com responsabilidade e segurança, fortalecendo cadeias produtivas.
+          Medimos sucesso por <strong>capital liberado com qualidade</strong>, <strong>redução de inadimplência</strong>
+          e <strong>governança</strong> que resiste a qualquer auditoria.
+        </p>
+        <div class="grid-3">
+          <div class="feature">
+            <h4>Métricas que importam</h4>
+            <ul class="list">
+              <li>Tempo médio de aprovação (TMA).</li>
+              <li>Taxa de conversão por segmento.</li>
+              <li>Perdas esperadas vs. realizadas.</li>
+            </ul>
+          </div>
+          <div class="feature">
+            <h4>Segurança e privacidade</h4>
+            <ul class="list">
+              <li>Princípios de minimização de dados.</li>
+              <li>Criptografia em repouso e em trânsito.</li>
+              <li>Consentimento e revogação simplificados.</li>
+            </ul>
+          </div>
+          <div class="feature">
+            <h4>Parcerias responsáveis</h4>
+            <ul class="list">
+              <li>Seleção e due diligence de originadores.</li>
+              <li>SLAs e KPIs compartilhados.</li>
+              <li>Cláusulas claras de confidencialidade.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= PROCESSO (BLOCO OPCIONAL 5) ========= -->
+  <section id="processo" class="process" aria-labelledby="t-proc">
+    <div class="container">
+      <h2 id="t-proc" class="title">Como trabalhamos — do diagnóstico ao desembolso</h2>
+      <p class="lead">Três etapas objetivas, com prazos definidos e checkpoints de governança.</p>
+
+      <div class="grid-3" aria-label="Etapas do processo">
+        <div class="step">
+          <h3>1. Diagnóstico &amp; Dossiê</h3>
+          <p>Coleta de documentos, leitura de demonstrações e definição de garantias. Geração de dossiê digital padronizado.</p>
+          <ul class="list">
+            <li>Checklist inteligente de documentos.</li>
+            <li>Mapa de riscos e mitigadores.</li>
+            <li>Validação de políticas KYC/AML.</li>
+          </ul>
+        </div>
+        <div class="arrow" aria-hidden="true">➜</div>
+        <div class="step">
+          <h3>2. Originação &amp; Negociação</h3>
+          <p>Envio do dossiê a parceiros, simulações e comparação de propostas. Comitê recomenda a melhor estrutura.</p>
+          <ul class="list">
+            <li>Matriz de comparação e CET.</li>
+            <li>Memória de negociação registrada.</li>
+            <li>Condicionantes e covenants claros.</li>
+          </ul>
+        </div>
+        <div class="arrow" aria-hidden="true">➜</div>
+        <div class="step">
+          <h3>3. Formalização &amp; Desembolso</h3>
+          <p>Contrato eletrônico, conferência de garantias, registro e liberação. Painéis de acompanhamento pós-desembolso.</p>
+          <ul class="list">
+            <li>Assinatura eletrônica auditável.</li>
+            <li>Checklist de registro e seguros.</li>
+            <li>Monitoramento e early warning.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= CTA / CONTATO ========= -->
+  <section id="contato" aria-labelledby="t-contato">
+    <div class="container">
+      <h2 id="t-contato" class="title">Pronto para destravar capital com segurança?</h2>
+      <p class="lead">
+        Clique em <strong>“Abrir formulário”</strong> para nos enviar sua mensagem.
+        Responderemos por e-mail em até 1 dia útil. Sem ligações e sem spam.
+      </p>
+      <div class="grid-2">
+        <div class="feature">
+          <h3>Frases úteis para o formulário</h3>
+          <ul class="list">
+            <li>“Quero comparar propostas para capital de giro.”</li>
+            <li>“Preciso estruturar antecipação de recebíveis para a temporada.”</li>
+            <li>“Busco linha com garantia real — podemos avaliar opções?”</li>
+            <li>“Desejo revisar nossa política de crédito e KRIs.”</li>
+            <li>“Quais integrações com meu ERP vocês oferecem?”</li>
+          </ul>
+          <button class="cta-btn" data-open="contact-modal">Abrir formulário</button>
+        </div>
+        <div class="feature">
+          <h3>Contato institucional</h3>
+          <p class="muted">Preferimos comunicação escrita para manter rastreabilidade e transparência.</p>
+          <ul class="list">
+            <li><strong>Endereço:</strong> Rua Joao Batista da Silva Lessa, 287</li>
+            <li><strong>E-mail:</strong> <a href="mailto:tiago@performancemanagementservice.org">tiago@performancemanagementservice.org</a></li>
+          </ul>
+          <p class="muted">Sem formulário telefônico, em respeito à sua privacidade e às diretrizes de apps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= FOOTER ========= -->
+  <footer role="contentinfo" aria-label="Rodapé">
+    <div class="container foot">
+      <div>
+        <div class="brand"><i aria-hidden="true"></i><span>High Performance</span></div>
+        <p class="muted">
+          HIGH PERFORMANCE MANAGEMENT SERVICE LTDA — atividades relacionadas à intermediação de crédito e serviços
+          financeiros. Operamos com transparência, privacidade e segurança.
+        </p>
+        <p class="legal">
+          Avisos: este site é informativo e não constitui oferta de valores mobiliários.
+          Sujeito à análise de crédito e documentação. Dados de visitantes são tratados com base em consentimento,
+          minimização e finalidade específica.
+        </p>
+      </div>
+      <div>
+        <h4>Links úteis</h4>
+        <ul class="list">
+          <li><a href="#sobre">Quem Somos</a></li>
+          <li><a href="#servicos">Soluções</a></li>
+          <li><a href="#processo">Nosso Processo</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+        <small>© <span id="year"></span> HIGH PERFORMANCE MANAGEMENT SERVICE LTDA. Todos os direitos reservados.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========= MODAL: FORM CONTATO ========= -->
+  <div class="modal" id="contact-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="form-title" aria-describedby="form-desc">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 id="form-title">Fale com um especialista</h3>
+          <p id="form-desc" class="muted">Preencha as informações abaixo. Responderemos por e-mail.</p>
+        </div>
+        <button class="close-btn" data-close="contact-modal" aria-label="Fechar formulário">Fechar</button>
+      </div>
+
+      <form id="contact-form" novalidate>
+        <div class="row">
+          <div>
+            <label for="nome">Nome completo</label>
+            <input id="nome" name="nome" type="text" autocomplete="name" required placeholder="Ex.: Ana Souza" />
+          </div>
+          <div>
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Alfa Indústria S.A." />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="email">E-mail corporativo</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="nome@empresa.com.br" />
+          </div>
+          <div>
+            <label for="assunto">Assunto</label>
+            <select id="assunto" name="assunto" required>
+              <option value="">Selecione…</option>
+              <option>Intermediação de crédito</option>
+              <option>Gestão de recebíveis</option>
+              <option>Análise de risco</option>
+              <option>Parcerias de funding</option>
+              <option>Outros</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row3">
+          <div>
+            <label for="mensagem">Mensagem</label>
+            <textarea id="mensagem" name="mensagem" placeholder="Conte-nos brevemente seu objetivo, prazos e valores aproximados." required></textarea>
+          </div>
+          <div class="check">
+            <input id="consent" type="checkbox" required aria-describedby="consent-help" />
+            <label for="consent">Autorizo o uso dos dados acima para resposta ao meu contato.</label>
+          </div>
+          <p id="consent-help" class="muted">Usamos apenas o necessário para retorno. Você pode solicitar exclusão a qualquer momento.</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="ghost" data-close="contact-modal">Cancelar</button>
+          <button type="submit" class="cta-btn">Enviar mensagem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========= MODAL: SUCESSO ========= -->
+  <div class="modal" id="success-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ok-title" aria-describedby="ok-desc">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 id="ok-title">Mensagem enviada</h3>
+          <p id="ok-desc" class="muted">Obrigado! Em breve você receberá retorno em seu e-mail.</p>
+        </div>
+        <button class="close-btn" data-close="success-modal" aria-label="Fechar mensagem">Fechar</button>
+      </div>
+      <div class="feature">
+        <p><strong>Próximos passos</strong></p>
+        <ul class="list">
+          <li>Revisaremos suas informações e, se necessário, pediremos documentos adicionais.</li>
+          <li>Você receberá um e-mail com prazos, checklist e responsável pela conta.</li>
+          <li>Seguimos sem ligações telefônicas — toda comunicação ocorre por e-mail.</li>
+        </ul>
+        <div class="form-actions">
+          <button class="cta-btn" data-close="success-modal">Ok, entendi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= JS ========= -->
+  <script>
+    // Ano no rodapé
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Rolagem suave (acessível)
+    document.querySelectorAll('a[href^="#"]').forEach(function(link){
+      link.addEventListener('click', function(e){
+        var id = this.getAttribute('href');
+        if(id.length > 1){
+          e.preventDefault();
+          var el = document.querySelector(id);
+          if(el){
+            el.scrollIntoView({behavior:'smooth', block:'start'});
+            // foca o título após a rolagem
+            setTimeout(function(){
+              var heading = el.querySelector('.title') || el.querySelector('h2') || el.querySelector('h1');
+              if(heading) heading.setAttribute('tabindex','-1'), heading.focus({preventScroll:true});
+            }, 600);
+          }
+        }
+      });
+    });
+
+    // Utilidades de modal
+    function openModal(id){
+      var m = document.getElementById(id);
+      if(!m) return;
+      m.setAttribute('aria-hidden','false');
+      // travar foco no modal
+      var focusable = m.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      function handle(e){
+        if(e.key === 'Escape'){ closeModal(id); }
+        if(e.key === 'Tab'){
+          if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+          else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+        }
+      }
+      m.addEventListener('keydown', handle);
+      m.dataset.handler = '1';
+      setTimeout(function(){ first && first.focus(); }, 50);
+    }
+    function closeModal(id){
+      var m = document.getElementById(id);
+      if(!m) return;
+      m.setAttribute('aria-hidden','true');
+    }
+    document.querySelectorAll('[data-open]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        openModal(this.getAttribute('data-open'));
+      });
+    });
+    document.querySelectorAll('[data-close]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        closeModal(this.getAttribute('data-close'));
+      });
+    });
+    // Fechar modal clicando fora do diálogo
+    document.querySelectorAll('.modal').forEach(function(m){
+      m.addEventListener('click', function(e){
+        if(e.target === m){ m.setAttribute('aria-hidden','true'); }
+      });
+    });
+
+    // Validação simples e "envio" fake do formulário
+    document.getElementById('contact-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var form = e.currentTarget;
+      // Limpa erros antigos
+      form.querySelectorAll('[aria-invalid="true"]').forEach(function(i){ i.removeAttribute('aria-invalid'); });
+      var ok = true;
+      ['nome','email','assunto','mensagem','consent'].forEach(function(id){
+        var el = form.querySelector('#'+id);
+        if(!el) return;
+        if((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === ''){
+          el.setAttribute('aria-invalid','true'); ok = false;
+        }
+      });
+      if(!ok){
+        alert('Por favor, preencha os campos obrigatórios.');
+        return;
+      }
+      // Fecha o modal de contato e abre o de sucesso
+      closeModal('contact-modal');
+      openModal('success-modal');
+      form.reset();
+    });
+  </script>
+</body>
+</html>
